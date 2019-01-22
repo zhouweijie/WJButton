@@ -68,7 +68,7 @@ import UIKit
         self.contentHorizontalAlignment = .center
         imageView?.contentMode = .center
         titleLabel?.contentMode = .center
-        arrange(titleSize: titleLabel?.intrinsicContentSize ?? .zero, imageSize: imageView?.intrinsicContentSize ?? .zero, atPosition: self.position, withSpacing: self.contentSpacing)
+        arrange(titleSize: titleLabel?.attributedText?.size() ?? .zero, imageSize: imageView?.image?.size ?? .zero, atPosition: self.position, withSpacing: self.contentSpacing)
     }
     
     private func arrange(titleSize: CGSize, imageSize: CGSize, atPosition position: Position, withSpacing spacing: CGFloat) {
@@ -90,7 +90,7 @@ import UIKit
     
     override var intrinsicContentSize: CGSize {
         let imageSize = self.imageView?.image?.size
-        let titleSize = self.titleLabel?.intrinsicContentSize
+        let titleSize = self.titleLabel?.attributedText?.size()
         if self.position == .left || self.position == .right {
             let imageWidth = imageSize?.width ?? 0
             let titleWidth = titleSize?.width ?? 0
