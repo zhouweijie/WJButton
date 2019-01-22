@@ -12,7 +12,7 @@
 		60ADBB2521EC906900FE6872 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60ADBB2321EC906900FE6872 /* Main.storyboard */; };
 		60ADBB2721EC906A00FE6872 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60ADBB2621EC906A00FE6872 /* Assets.xcassets */; };
 		60ADBB2A21EC906A00FE6872 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 60ADBB2821EC906A00FE6872 /* LaunchScreen.storyboard */; };
-		60ADBB3421EC90C300FE6872 /* WJButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60ADBB3321EC90C300FE6872 /* WJButton.swift */; };
+		60F3651621F6BAEE00ABE9E0 /* WJButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60F3651521F6BAEE00ABE9E0 /* WJButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,7 +23,7 @@
 		60ADBB2621EC906A00FE6872 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		60ADBB2921EC906A00FE6872 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		60ADBB2B21EC906A00FE6872 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		60ADBB3321EC90C300FE6872 /* WJButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WJButton.swift; sourceTree = "<group>"; };
+		60F3651521F6BAEE00ABE9E0 /* WJButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WJButton.swift; path = ../../../WJButton/WJButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +56,7 @@
 		60ADBB1E21EC906900FE6872 /* WJButtonDemo */ = {
 			isa = PBXGroup;
 			children = (
-				60ADBB3321EC90C300FE6872 /* WJButton.swift */,
+				60F3651521F6BAEE00ABE9E0 /* WJButton.swift */,
 				60ADBB1F21EC906900FE6872 /* AppDelegate.swift */,
 				60ADBB2121EC906900FE6872 /* ViewController.swift */,
 				60ADBB2321EC906900FE6872 /* Main.storyboard */,
@@ -140,7 +140,7 @@
 			files = (
 				60ADBB2221EC906900FE6872 /* ViewController.swift in Sources */,
 				60ADBB2021EC906900FE6872 /* AppDelegate.swift in Sources */,
-				60ADBB3421EC90C300FE6872 /* WJButton.swift in Sources */,
+				60F3651621F6BAEE00ABE9E0 /* WJButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
