@@ -8,7 +8,7 @@
 
 import UIKit
 
-/// title可以相对于image上下左右四个方向排列，有实际内容大小和不固定大小（alignment属性定义内容显示位置）两种显示方式，contentEdgeInsets增加上下左右边距
+/// title可以相对于image上下左右四个方向排列，有实际内容大小和不固定大小两种显示方式，contentEdgeInsets增加上下左右边距
 @objcMembers class WJButton: UIButton {
 
     enum titlePosition: Int {
