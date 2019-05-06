@@ -63,13 +63,6 @@ import UIKit
         titleLabel?.contentMode = .center
         let titleSize = titleLabel?.attributedText?.size() ?? .zero
         let imageSize = imageView?.image?.size ?? .zero
-        //调整子视图位置（修改内容后自动适应）
-        var titleFrame = self.titleLabel?.frame ?? .zero
-        titleFrame = CGRect(x: titleFrame.minX + (titleFrame.size.width - titleSize.width)/2, y: titleFrame.minY + (titleFrame.size.height - titleSize.height)/2, width: titleSize.width, height: titleSize.height)
-        self.titleLabel?.frame = titleFrame
-        var imageFrame = self.imageView?.frame ?? .zero
-        imageFrame = CGRect(x: imageFrame.minX + (imageFrame.size.width - imageSize.width)/2, y: imageFrame.minY + (imageFrame.size.height - imageSize.height)/2, width: imageSize.width, height: imageSize.height)
-        imageView?.frame = imageFrame
         arrange(titleSize: titleSize, imageSize: imageSize, atPosition: self.titlePosition, withSpacing: self.contentSpacing)
     }
     
