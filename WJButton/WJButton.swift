@@ -15,79 +15,95 @@ import UIKit
         case top, bottom, left, right
     }
     
-    var titlePosition: titlePosition = .right {
-        didSet {
-            self.setNeedsLayout()
-        }
-    }
+    var titlePosition: titlePosition = .right
     
     /// 上下左右边距，调用intrinsicContentSize会加上
-    var insets: UIEdgeInsets = .zero {
-        didSet {
-            self.setNeedsLayout()
-        }
-    }
-    
+    var insets: UIEdgeInsets = .zero
+
     /// 文字和图片间距
-    var contentSpacing: CGFloat = 0.0 {
-        didSet {
-            self.setNeedsLayout()
-        }
-    }
+    var contentSpacing: CGFloat = 0.0
+
     ///与image对齐时的偏移量
-    var titleOffset: CGFloat = 0.0 {
-        didSet {
-            self.setNeedsLayout()
-        }
-    }
+    var titleOffset: CGFloat = 0.0//待实现
+
     ///与title对齐时的偏移量
-    var imageOffset: CGFloat = 0.0 {
-        didSet {
-            self.setNeedsLayout()
-        }
-    }
+    var imageOffset: CGFloat = 0.0//title, image 上下左右偏移都要，待实现, 各种情况下调节inset还有待优化
     
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
+
+    override func setTitle(_ title: String?, for state: UIControl.State) {
+        super.setTitle(title, for: state)
+        if let newTitle = title {
+            let font = titleLabel?.font ?? UIFont()
+            self.tempTitle = NSAttributedString(string: newTitle, attributes: [NSAttributedString.Key.font : font])
+        }
+    }
+
+    override func setImage(_ image: UIImage?, for state: UIControl.State) {
+        super.setImage(image, for: state)
+        self.tempImage = image
+    }
+
+    override func setAttributedTitle(_ title: NSAttributedString?, for state: UIControl.State) {
+        super.setAttributedTitle(title, for: state)
+        self.tempTitle = title
+    }
+
+    func ajustTitleAndImage() {
+        titleLabel?.contentMode = .center
+        imageView?.contentMode = .center
         self.contentVerticalAlignment = .center
         self.contentHorizontalAlignment = .center
-        imageView?.contentMode = .center
-        titleLabel?.contentMode = .center
-        let titleSize = titleLabel?.attributedText?.size() ?? .zero
-        let imageSize = imageView?.image?.size ?? .zero
+
+        let titleSize = titleLabel?.intrinsicContentSize ?? .zero
+        let imageSize = imageView?.intrinsicContentSize ?? .zero
         arrange(titleSize: titleSize, imageSize: imageSize, atPosition: self.titlePosition, withSpacing: self.contentSpacing)
+    }
+
+    private var tempTitle: NSAttributedString?
+
+    private var tempImage: UIImage?
+
+//    var testCount: Int = 0
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+//        testCount += 1
+//        print(testCount)
     }
     
     ///使用titleEdgeInsets 和 imageEdgeInsets调整位置
     private func arrange(titleSize: CGSize, imageSize: CGSize, atPosition position: titlePosition, withSpacing spacing: CGFloat) {
         switch (position) {
         case .top:
-            titleEdgeInsets = UIEdgeInsets(top: -(imageSize.height + spacing), left: -(imageSize.width)+titleOffset, bottom: 0, right: -titleOffset)
-            imageEdgeInsets = UIEdgeInsets(top: titleSize.height+spacing, left: imageOffset, bottom: 0, right: -titleSize.width)
+            titleEdgeInsets = UIEdgeInsets(top: -(imageSize.height + titleSize.height + spacing), left: -(imageSize.width), bottom: 0, right: 0)
+            imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width)
+            contentEdgeInsets = UIEdgeInsets(top: spacing / 2 + titleSize.height, left: -imageSize.width/2, bottom: 0, right: -imageSize.width/2)
         case .bottom:
-            titleEdgeInsets = UIEdgeInsets(top: (imageSize.height + titleSize.height + spacing), left: -(imageSize.width)+titleOffset, bottom: titleSize.height, right: -titleOffset)
-            imageEdgeInsets = UIEdgeInsets(top: -(titleSize.height+spacing), left: imageOffset, bottom: 0, right: -titleSize.width)
+            titleEdgeInsets = UIEdgeInsets(top: (imageSize.height + titleSize.height + spacing), left: -(imageSize.width), bottom: 0, right: 0)
+            imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -titleSize.width)
+            contentEdgeInsets = UIEdgeInsets(top: 0, left: -imageSize.width/2, bottom: spacing / 2 + titleSize.height, right: -imageSize.width/2)
         case .left:
-            titleEdgeInsets = UIEdgeInsets(top: titleOffset, left: -(imageSize.width*2+spacing), bottom: 0, right: 0)
-            imageEdgeInsets = UIEdgeInsets(top: imageOffset, left: 0, bottom: 0, right: -(titleSize.width*2+spacing))
+            titleEdgeInsets = UIEdgeInsets(top: 0, left: -(imageSize.width * 2), bottom: 0, right: 0)
+            imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -(titleSize.width * 2 + spacing))
+            contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: spacing / 2)
         case .right:
-            titleEdgeInsets = UIEdgeInsets(top: titleOffset, left: 0, bottom: 0, right: -spacing)
-            imageEdgeInsets = UIEdgeInsets(top: imageOffset, left: 0, bottom: 0, right: spacing)
+            titleEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -spacing)
+            imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: spacing / 2)
         }
     }
     
     /// 返回固有内容大小加上insets的大小
     override var intrinsicContentSize: CGSize {
-        let imageSize = self.imageView?.image?.size
-        let titleSize = self.titleLabel?.attributedText?.size()
+        let imageSize = tempImage?.size
+        let titleSize = tempTitle?.size()
         if self.titlePosition == .left || self.titlePosition == .right {
             let imageWidth = imageSize?.width ?? 0
             let titleWidth = titleSize?.width ?? 0
@@ -104,8 +120,8 @@ import UIKit
     }
     
     var intrinsicSizeWithoutinsets: CGSize {
-        let imageSize = self.imageView?.image?.size
-        let titleSize = self.titleLabel?.attributedText?.size()
+        let imageSize = tempImage?.size
+        let titleSize = tempTitle?.size()
         if self.titlePosition == .left || self.titlePosition == .right {
             let imageWidth = imageSize?.width ?? 0
             let titleWidth = titleSize?.width ?? 0
