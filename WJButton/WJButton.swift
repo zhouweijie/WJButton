@@ -40,8 +40,7 @@ import UIKit
     override func setTitle(_ title: String?, for state: UIControl.State) {
         super.setTitle(title, for: state)
         if let newTitle = title {
-            let font = titleLabel?.font ?? UIFont()
-            self.tempTitle = NSAttributedString(string: newTitle, attributes: [NSAttributedString.Key.font : font])
+            self.tempTitle = NSMutableAttributedString(string: newTitle)
         }
     }
 
@@ -52,31 +51,31 @@ import UIKit
 
     override func setAttributedTitle(_ title: NSAttributedString?, for state: UIControl.State) {
         super.setAttributedTitle(title, for: state)
-        self.tempTitle = title
+        if title != nil {
+            self.tempTitle = NSMutableAttributedString(attributedString: title!)
+        }
     }
 
+    /// 设置完所有属性之后记得调用这个方法调整位置
     func ajustTitleAndImage() {
         titleLabel?.contentMode = .center
         imageView?.contentMode = .center
         self.contentVerticalAlignment = .center
         self.contentHorizontalAlignment = .center
-
+        
+        if tempTitle != nil {
+            let font = titleLabel?.font ?? UIFont.systemFont(ofSize: 12)
+            tempTitle?.addAttribute(NSAttributedString.Key.font, value: font, range: NSRange(location: 0, length: tempTitle!.length))
+        }
+        
         let titleSize = titleLabel?.intrinsicContentSize ?? .zero
         let imageSize = imageView?.intrinsicContentSize ?? .zero
         arrange(titleSize: titleSize, imageSize: imageSize, atPosition: self.titlePosition, withSpacing: self.contentSpacing)
     }
 
-    private var tempTitle: NSAttributedString?
+    private var tempTitle: NSMutableAttributedString?
 
     private var tempImage: UIImage?
-
-//    var testCount: Int = 0
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-//        testCount += 1
-//        print(testCount)
-    }
     
     ///使用titleEdgeInsets 和 imageEdgeInsets调整位置
     private func arrange(titleSize: CGSize, imageSize: CGSize, atPosition position: titlePosition, withSpacing spacing: CGFloat) {
